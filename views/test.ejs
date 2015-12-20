@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Selector</title>
+    <script src="/js/jquery-1.8.3.min.js"></script>
+    <script>
+        $(window).on("load", function () {
+            $("#btn").on("click", function () {
+                JQuerySend();
+            });
+            function send(){
+                var xmlHttp;
+                if(window.XMLHttpRequest){
+                    xmlHttp = new XMLHttpRequest();
+                }else{
+                    xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+                }
+
+                xmlHttp.onreadystatechange = function(){
+                    if(xmlHttp.readyState == 4 && xmlHttp.status == 200){
+                        document.getElementById("myDiv").innerHTML = xmlHttp.responseText;
+                    }
+                };
+                xmlHttp.open("GET","/test/upload",true);
+                xmlHttp.send();
+            };
+            function JQuerySend(){
+                $.ajax({
+                    type : 'get',
+                    url : '/test/upload',
+                    data : {
+                        name : 'Tom',
+                        password : '4474'
+                    },
+                    success: function(data){
+                        $("#myDiv").html(data);
+                    },
+                    error: function(err,data){
+                        console.log(err+" "+data);
+                    }
+                })
+            }
+        })
+    </script>
+</head>
+<body>
+<div id="myDiv"></div>
+<input type="button" value="get" id="btn">
+</body>
+</html>
